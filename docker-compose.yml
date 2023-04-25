@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: vue_laravel_learning_app
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+
+volumes:
+  data:
+    driver: local
