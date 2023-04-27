@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Survey;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreSurveyRequest;
+use App\Http\Requests\UpdateSurveyRequest;
+use App\Http\Resources\SurveyResource;
 use Illuminate\Http\Request;
 
 class SurveyController extends Controller
@@ -11,56 +14,59 @@ class SurveyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $user = $request->user();
+        return SurveyResource::collection(Survey::where('user_id', $user->id)->paginate());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSurveyRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $survey = Survey::create($validated);
+
+        return new SurveyResource($survey);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Survey $survey)
+    public function show(Survey $survey, Request $request)
     {
-        //
-    }
+        $user = $request->user();
+        if ($user->id !== $survey->user_id) {
+            return abort(403, 'Unauthorized action.');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Survey $survey)
-    {
-        //
+        return new SurveyResource($survey);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Survey $survey)
+    public function update(UpdateSurveyRequest $request, Survey $survey)
     {
-        //
+        $validated = $request->validated();
+        $survey->update($validated);
+
+        return new SurveyResource($survey);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Survey $survey)
+    public function destroy(Survey $survey, Request $request)
     {
-        //
+        $user = $request->user();
+        if ($user->id !== $survey->user_id) {
+            return abort(403, 'Unauthorized action.');
+        }
+
+        $survey->delete();
+
+        return response('', 204);
     }
 }

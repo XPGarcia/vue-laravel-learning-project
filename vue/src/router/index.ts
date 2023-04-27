@@ -7,6 +7,7 @@ import DefaultLayout from "../layouts/DefaultLayout.vue";
 import { useAuthStore } from "../store";
 import { storeToRefs } from "pinia";
 import AuthLayout from "../layouts/AuthLayout.vue";
+import SurveyView from "../views/SurveyView.vue";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -27,6 +28,16 @@ const routes: RouteRecordRaw[] = [
         path: "/surveys",
         name: "Surveys",
         component: Surveys,
+      },
+      {
+        path: "/surveys/create",
+        name: "SurveyCreate",
+        component: SurveyView,
+      },
+      {
+        path: "/surveys/:id",
+        name: "SurveyView",
+        component: SurveyView,
       },
     ],
   },
