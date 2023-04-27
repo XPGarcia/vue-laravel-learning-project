@@ -7,6 +7,6 @@
 <script setup lang="ts">
 import PageComponent from '../components/PageComponent.vue';
 
-const title = "Dashboard";
+const title = "Surveys";
 
 </script>
