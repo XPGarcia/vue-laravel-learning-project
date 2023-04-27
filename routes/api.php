@@ -20,5 +20,5 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::resource('/survey', SurveyController::class);
+    Route::resource('/surveys', SurveyController::class);
 });

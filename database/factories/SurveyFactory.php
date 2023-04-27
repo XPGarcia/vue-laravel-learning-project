@@ -24,8 +24,8 @@ class SurveyFactory extends Factory
             'title' => fake()->title(),
             'slug' => fake()->slug(),
             'status' => fake()->randomElement([1, 0]),
-            'description' => fake()->text(),
-            'expire_date' => fake()->date()
+            'description' => fake()->paragraph(),
+            'expire_date' => fake()->dateTime()->format('Y-m-d H:i:s')
         ];
     }
 }
