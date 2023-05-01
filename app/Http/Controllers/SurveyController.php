@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSurveyRequest;
 use App\Http\Requests\UpdateSurveyRequest;
 use App\Http\Resources\SurveyResource;
+use DateTime;
 use Illuminate\Http\Request;
 
 class SurveyController extends Controller
@@ -17,7 +18,7 @@ class SurveyController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        return SurveyResource::collection(Survey::where('user_id', $user->id)->paginate());
+        return SurveyResource::collection(Survey::where("user_id", $user->id)->paginate());
     }
 
     /**
@@ -26,6 +27,9 @@ class SurveyController extends Controller
     public function store(StoreSurveyRequest $request)
     {
         $validated = $request->validated();
+        if (isset($validated['expire_date'])) {
+            $validated['expire_date'] = (new DateTime($validated["expire_date"]))->format("Y-m-d H:i:s");
+        }
         $survey = Survey::create($validated);
 
         return new SurveyResource($survey);
@@ -50,6 +54,9 @@ class SurveyController extends Controller
     public function update(UpdateSurveyRequest $request, Survey $survey)
     {
         $validated = $request->validated();
+        if (isset($validated['expire_date'])) {
+            $validated['expire_date'] = (new DateTime($validated["expire_date"]))->format("Y-m-d H:i:s");
+        }
         $survey->update($validated);
 
         return new SurveyResource($survey);

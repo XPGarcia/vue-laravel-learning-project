@@ -127,6 +127,11 @@ class SurveyTest extends TestCase
         );
     }
 
+    public function test_update_survey(): void
+    {
+        // TODO:
+    }
+
     public function test_delete_survey(): void
     {
         $survey = Survey::factory()->create();
